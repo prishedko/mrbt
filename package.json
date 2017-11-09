@@ -1,0 +1,51 @@
+{
+    "name": "mrbt",
+    "version": "0.0.1",
+    "description": "Build tools for monorepos",
+    "main": "index.js",
+    "engineStrict": true,
+    "engines": {
+        "node": ">= 6.9.0"
+    },
+    "devDependencies": {
+        "@types/jest": "~20.0.8",
+        "@types/node": "^6.0.90",
+        "gh-pages": "^1.0.0",
+        "jest": "~21.0.2",
+        "opn-cli": "^3.1.0",
+        "rimraf": "~2.6.1",
+        "tslint": "~5.7.0",
+        "tslint-microsoft-contrib": "~5.0.1",
+        "tsutils": "~2.8.2",
+        "typedoc": "^0.9.0",
+        "typescript": "~2.5.2"
+    },
+    "scripts": {
+        "clean": "rimraf coverage build tmp docs",
+        "compile": "tsc",
+        "compile-release": "tsc -p tsconfig.release.json",
+        "lint": "tslint -t stylish --type-check --project 'tsconfig.json'",
+        "test": "npm run test-only",
+        "test-only": "jest --coverage",
+        "docs": "npm run docs:html && opn ./docs/index.html",
+        "docs:html": "typedoc --excludeNotExported --mode file --theme minimal --out ./docs/ ./src/index.ts",
+        "docs:publish": "npm run docs:html && gh-pages -d ./docs",
+        "build": "npm run compile-release && npm run test && cp ./package.json build/src && cp ./README.md build/src",
+        "reset": "git clean -dfx && git reset --hard && npm install"
+    },
+    "author": "Bogdan Prishedko <prishedko@gmail.com>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/prishedko/mrbt.git"
+    },
+    "bugs": {
+        "url": "https://github.com/prishedko/mrbt/issues"
+    },
+    "homepage": "https://github.com/prishedko/mrbt#readme",
+    "dependencies": {
+        "algorithms-ts": "^0.1.0",
+        "chalk": "^2.3.0",
+        "tslib": "~1.7.1"
+    }
+}
