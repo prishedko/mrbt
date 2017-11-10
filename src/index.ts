@@ -69,6 +69,16 @@ export namespace command {
             .run()
     }
 
+    export function npm(args: string[], done: () => void): void {
+        new SpawnCommandBuilderImpl(executors.npm())
+            .args(args)
+            .callbacks({
+                onComplete: done
+            })
+            .build()
+            .run()
+    }
+
     export function mvn(args: string[], done: () => void): void {
         new SpawnCommandBuilderImpl(executors.mvn())
             .args(args)
