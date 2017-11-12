@@ -8,8 +8,8 @@
     "license": "MIT",
     "private": true,
     "devDependencies": {
-        "mrbt": ">=0.0.2-SNAPSHOT",
-        "gulp": "^3.9.1"
+        "gulp": "^3.9.1",
+        "mrbt": ">=0.0.2-SNAPSHOT"
     },
     "scripts": {
         "description": "node ./scripts/description.js",
