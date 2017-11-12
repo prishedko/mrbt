@@ -1,6 +1,6 @@
 {
     "name": "mrbt",
-    "version": "0.0.2-SNAPSHOT",
+    "version": "0.0.2-SNAPSHOT.0",
     "description": "Build tools for monorepos",
     "main": "index.js",
     "engineStrict": true,
