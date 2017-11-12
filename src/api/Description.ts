@@ -22,6 +22,9 @@ export interface ExecutorDescriptor {
 }
 
 export interface PackageExecutorDescription {
+    /**
+     * Name of package directory, not the package name in package.json
+     */
     package: string | string[]
     executor: ExecutorDescriptor | ExecutorDescriptor[]
 }

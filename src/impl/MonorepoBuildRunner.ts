@@ -9,6 +9,7 @@ import vertex = GraphsBuilders.vertex
 import directedCycle = GraphsBuilders.directedCycle
 import topologicalOrder = GraphsBuilders.topologicalOrder
 import {ExecutionCallbacks, Executor, PackageExecutors} from '../api/CommonTypes'
+import chalk from 'chalk'
 
 type DependencyInfo = Indexed<string>
 
@@ -60,7 +61,7 @@ export class MonorepoBuildRunner {
                     ...(packageJson.dependencies ? packageJson.dependencies : {}),
                     ...(packageJson.devDependencies ? packageJson.devDependencies : {})
                 },
-                executors: this.getExecutors(packageJson.name)
+                executors: this.getExecutors(packageDir)
             }
             return acc
         }, {})
@@ -128,9 +129,15 @@ export class MonorepoBuildRunner {
         assert(() => !cycle.hasCycle(), `There is a cycle between packages:
             ${cycle.cycle().reduce((acc, v) => acc === '' ? v.key : acc + '->' + v.key, '')}`)
         const ts = topologicalOrder(dag).order()
-        this.buildPackages(ts.reduce((acc, v) => {
-            acc.push(v.value)
-            return acc
-        }, [] as PackageInfo[]))
+        if (ts.size() === 0) {
+            log.warn(`Nothing to build. Packages are not found in folder ${chalk.bold(this.packagesDir)}`)
+        } else {
+            const order = ts.reduce((acc, v) => `${acc}\n${v.key}`, '')
+            log.info(`Packages will be built in order: ${order}`)
+            this.buildPackages(ts.reduce((acc, v) => {
+                acc.push(v.value)
+                return acc
+            }, [] as PackageInfo[]))
+        }
     }
 }

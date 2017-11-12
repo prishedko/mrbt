@@ -7,6 +7,11 @@
     "engines": {
         "node": ">= 6.9.0"
     },
+    "dependencies": {
+        "algorithms-ts": "^0.1.1",
+        "chalk": "2.3.0",
+        "tslib": "~1.7.1"
+    },
     "devDependencies": {
         "@types/jest": "~20.0.8",
         "@types/node": "^6.0.90",
@@ -42,10 +47,5 @@
     "bugs": {
         "url": "https://github.com/prishedko/mrbt/issues"
     },
-    "homepage": "https://github.com/prishedko/mrbt#readme",
-    "dependencies": {
-        "algorithms-ts": "^0.1.0",
-        "chalk": "^2.3.0",
-        "tslib": "~1.7.1"
-    }
+    "homepage": "https://github.com/prishedko/mrbt#readme"
 }

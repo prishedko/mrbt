@@ -1,9 +1,10 @@
 import {ExecutorDescriptor, ExecutorType, MonorepoBuildDescription} from '../api/Description'
 import {MonorepoBuildImpl} from './MonorepoBuildImpl'
 import {Executor} from '../api/CommonTypes'
-import {assert, isInexact} from './Utils'
+import {assert, isInexact, log} from './Utils'
 import {ExecutorsFactoryImpl} from './ExecutorsFactoryImpl'
 import {ForkExecutorBuilder, SpawnExecutorBuilder} from '../api/Fluent'
+import chalk from 'chalk'
 
 export class MonorepoBuildDescriptionRunner {
     constructor(private description: MonorepoBuildDescription) {
@@ -56,13 +57,17 @@ export class MonorepoBuildDescriptionRunner {
                 return this.buildFork(descriptor, factory.gulp())
             case ExecutorType.webpack:
                 return this.buildFork(descriptor, factory.webpack())
+            default:
+                log.error(`Unknown executor type: ${chalk.bold(descriptor.type)}`)
+                throw new Error(`Unknown executor type: ${descriptor.type}`)
+
         }
     }
 
     buildExecutors(executor: ExecutorDescriptor | ExecutorDescriptor[]): Executor | Executor[] {
         assert(() => !isInexact(executor), 'Executor cannot be null or undefined')
         if (Array.isArray(executor)) {
-            return executor.map(this.buildExecutor)
+            return executor.map(v => this.buildExecutor(v))
         } else {
             return this.buildExecutor(executor)
         }

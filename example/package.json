@@ -1,0 +1,18 @@
+{
+    "name": "mrbt-example-description",
+    "description": "Example of using MRBT Description API",
+    "version": "1.0.0",
+    "workspaces": [
+        "packages/*"
+    ],
+    "license": "MIT",
+    "private": true,
+    "devDependencies": {
+        "mrbt": ">=0.0.2-SNAPSHOT",
+        "gulp": "^3.9.1"
+    },
+    "scripts": {
+        "description": "node ./scripts/description.js",
+        "fluent": "node ./scripts/fluent"
+    }
+}

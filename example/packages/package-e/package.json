@@ -1,0 +1,10 @@
+{
+    "name": "package-e",
+    "version": "1.0.0",
+    "license": "MIT",
+    "private": true,
+    "dependencies": {
+        "mrbt-example-description-package-b": "1.0.0",
+        "mrbt-example-description-package-d": "1.0.0"
+    }
+}

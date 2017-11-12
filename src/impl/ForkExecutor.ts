@@ -10,10 +10,6 @@ export class ForkExecutor implements Executor {
                 private options: ForkExecutorOptions) {}
 
     execute(options: ForkExecutorOptions, callbacks?: ExecutionCallbacks): void {
-        if (!this.filter({ platform: process.platform })) {
-            log.info(`Execution of node script ${chalk.bold(this.modulePath)} was filtered`)
-            return
-        }
         const cbs = {
             onComplete: callbacks && callbacks.onComplete
                 ? callbacks.onComplete
@@ -21,6 +17,11 @@ export class ForkExecutor implements Executor {
             onError: callbacks && callbacks.onError
                 ? callbacks.onError
                 : (error: Error) => { throw error }
+        }
+        if (!this.filter({ platform: process.platform })) {
+            log.warn(`Execution of node script ${chalk.bold(this.modulePath)} was filtered`)
+            cbs.onComplete()
+            return
         }
         const opts: ForkExecutorOptions = {
             ...options,

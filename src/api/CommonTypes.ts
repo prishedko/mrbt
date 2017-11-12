@@ -1,5 +1,8 @@
 import * as Stream from 'stream'
 
+/**
+ * Type that describes values of <a href="https://nodejs.org/api/child_process.html#child_process_options_stdio"></a>
+ */
 export type StdOption = undefined | null | string | number | Stream
 
 export type IndexedStrings = {
