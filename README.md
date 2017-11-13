@@ -36,3 +36,37 @@ Utils contains helpers that are not part of *Monorepo build* and that can be use
 *Monorepo build* process.
 
 Please find [API documentation on GitPages](https://prishedko.github.io/mrbt/)
+
+## Passing command line arguments
+
+Usually command line arguments are described for each executor separately. But also you can pass arguments that will be
+passed in every executor of given type. For that you just need to add command line argument for build script, and this
+argument shoud have the following format:
+```bash
+mrbt-[executor command]=[argument value]
+```
+MRBT will remove prefix and pass *argument value* part as argument in every executor with
+*command === executor command part*.
+For example, you have several executors that run *mvn* command and you want to
+pass *-s /path/settings.xml* in every *mvn* command to enforce using custom settings. For that you can write:
+```bash
+node build.js mrbt-mvn=-s mrbt-mvn=/path/settings.xml
+```
+and MRBT will pass *-s* and */path/settings.xml* arguments in every executor that runs *mvn* command; it will be done
+in addition to arguments that are described in executors configuration.
+Also you can inject arguments with some prefix in partical executors. For example, you build package *package-a* by
+using *gulp* and you want to provide list of gulp tasks by using command line arguments. To implement that you need
+to define you executor in the following way:
+```javascript 1.7
+{
+    package: 'package-a',
+    executor: {
+        type: 'gulp',
+        args: [...mrbt.utils.args('package-a')]
+    }
+}
+```
+and then in command line pass all required tasks like this:
+```bash
+node build.js package-a=clean package-a=build package-a=deploy
+```

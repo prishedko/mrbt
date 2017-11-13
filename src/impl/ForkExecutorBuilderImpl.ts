@@ -3,10 +3,11 @@ import {isInexact, log} from './Utils'
 import {ForkExecutor} from './ForkExecutor'
 import {ForkExecutorBuilder} from '../api/Fluent'
 import {ExecutionContext, Executor, ForkExecutorOptions} from '../api/CommonTypes'
+import {addMrbtCommandLineArgs} from './CommandLineArgsHelper'
 
 export class ForkExecutorBuilderImpl implements ForkExecutorBuilder {
     private filtr: (context: ExecutionContext) => boolean = () => true
-    private args: string[] = []
+    private argumentsValues: string[] = []
     private opts: ForkExecutorOptions = {}
 
     constructor(private modulePath: string) {}
@@ -24,7 +25,18 @@ export class ForkExecutorBuilderImpl implements ForkExecutorBuilder {
         if (isInexact(argument)) {
             log.warn(`${chalk.bold('arg')} cannot be null or undefined, will be ignored`)
         } else {
-            this.args.push(argument)
+            this.argumentsValues.push(argument)
+        }
+        return this
+    }
+
+    args(values: string[]): ForkExecutorBuilder {
+        if (isInexact(values)) {
+            log.warn(`${chalk.bold('args')} cannot be null or undefined, will be ignored`)
+        } else if (!Array.isArray(values)) {
+            log.warn(`${chalk.bold('args')} should be an array, will be ignored`)
+        } else {
+            values.forEach(v => this.arg(v))
         }
         return this
     }
@@ -42,7 +54,8 @@ export class ForkExecutorBuilderImpl implements ForkExecutorBuilder {
     }
 
     build(): Executor {
-        return new ForkExecutor(this.modulePath, this.filtr, this.args, this.opts)
+        return new ForkExecutor(this.modulePath, this.filtr, addMrbtCommandLineArgs(this.modulePath,
+            this.argumentsValues), this.opts)
     }
 
 }

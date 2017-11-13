@@ -32,6 +32,7 @@ export interface ForkExecutorOptionsBuilder {
 export interface SpawnExecutorBuilder {
     filter(predicate: (context: ExecutionContext) => boolean): SpawnExecutorBuilder
     arg(argument: string): SpawnExecutorBuilder
+    args(values: string[]): SpawnExecutorBuilder
     options(opts: SpawnExecutorOptions): SpawnExecutorBuilder
     build(): Executor
 }
@@ -39,6 +40,7 @@ export interface SpawnExecutorBuilder {
 export interface ForkExecutorBuilder {
     filter(predicate: (context: ExecutionContext) => boolean): ForkExecutorBuilder
     arg(argument: string): ForkExecutorBuilder
+    args(values: string[]): ForkExecutorBuilder
     options(opts: ForkExecutorOptions): ForkExecutorBuilder
     build(): Executor
 }

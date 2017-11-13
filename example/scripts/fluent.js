@@ -42,12 +42,11 @@ mrbt.fluent
             .build())
     // want to use non-default gulp task to build this package
     // also gulpfile.js in that package contains examples of using MRBT utils
+    // and here we read arguments from command line
     .withExecutor(
         'package-f',
         mrbt.executors.gulp()
-            .arg('clean')
-            .arg('build')
-            .arg('publish')
+            .args(['clean', 'build', ...mrbt.utils.args('package-f-gulp')])
             .build()
     )
     .execute()

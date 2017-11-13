@@ -12,7 +12,7 @@
         "mrbt": ">=0.0.2-SNAPSHOT"
     },
     "scripts": {
-        "description": "node ./scripts/description.js",
-        "fluent": "node ./scripts/fluent"
+        "description": "node ./scripts/description.js mrbt-echo='I am global echo argument' mrbt-ls=-i package-f-gulp=publish",
+        "fluent": "node ./scripts/fluent mrbt-echo='I am global echo argument' mrbt-ls=-i package-f-gulp=publish"
     }
 }

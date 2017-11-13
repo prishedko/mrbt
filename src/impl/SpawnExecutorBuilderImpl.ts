@@ -3,10 +3,11 @@ import {assert, isInexact, log} from './Utils'
 import chalk from 'chalk'
 import {SpawnExecutorBuilder} from '../api/Fluent'
 import {ExecutionContext, Executor, IndexedStrings, SpawnExecutorOptions} from '../api/CommonTypes'
+import {addMrbtCommandLineArgs} from './CommandLineArgsHelper'
 
 export class SpawnExecutorBuilderImpl implements SpawnExecutorBuilder {
     private filtr: (context: ExecutionContext) => boolean = () => true
-    private args: string[] = []
+    private argumentsValues: string[] = []
     private opts: SpawnExecutorOptions = {}
 
     constructor(private command: string, private extensions: IndexedStrings = {}) {
@@ -26,7 +27,18 @@ export class SpawnExecutorBuilderImpl implements SpawnExecutorBuilder {
         if (isInexact(argument)) {
             log.warn(`${chalk.bold('arg')} cannot be null or undefined, will be ignored`)
         } else {
-            this.args.push(argument)
+            this.argumentsValues.push(argument)
+        }
+        return this
+    }
+
+    args(values: string[]): SpawnExecutorBuilder {
+        if (isInexact(values)) {
+            log.warn(`${chalk.bold('args')} cannot be null or undefined, will be ignored`)
+        } else if (!Array.isArray(values)) {
+            log.warn(`${chalk.bold('args')} should be an array, will be ignored`)
+        } else {
+            values.forEach(v => this.arg(v))
         }
         return this
     }
@@ -44,6 +56,7 @@ export class SpawnExecutorBuilderImpl implements SpawnExecutorBuilder {
     }
 
     build(): Executor {
-        return new SpawnExecutor(this.command, this.extensions, this.filtr, this.args, this.opts)
+        return new SpawnExecutor(this.command, this.extensions, this.filtr,
+            addMrbtCommandLineArgs(this.command, this.argumentsValues), this.opts)
     }
 }
