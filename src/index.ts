@@ -1,5 +1,4 @@
 import {MonorepoBuildDescription} from './api/Description'
-import {readCommandLineArgs} from './impl/CommandLineArgsHelper'
 
 export * from './api/CommonTypes'
 export * from './api/Description'
@@ -109,8 +108,4 @@ export namespace command {
             .build()
             .run()
     }
-}
-
-export namespace utils {
-    export const args = readCommandLineArgs
 }
